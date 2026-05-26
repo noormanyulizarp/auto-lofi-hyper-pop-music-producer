@@ -1,4 +1,4 @@
-import { Home, Music, BookOpen, BarChart3, Settings } from 'lucide-react'
+import { Home, Music, BookOpen, BarChart3, Cpu } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 
 const navItems = [
@@ -6,7 +6,7 @@ const navItems = [
   { to: '/generate', icon: Music, label: 'Generate' },
   { to: '/learn', icon: BookOpen, label: 'Learn' },
   { to: '/dashboard', icon: BarChart3, label: 'Dashboard' },
-  { to: '/providers', icon: Settings, label: 'Providers' },
+  { to: '/providers', icon: Cpu, label: 'Providers' },
 ]
 
 export function Sidebar() {
