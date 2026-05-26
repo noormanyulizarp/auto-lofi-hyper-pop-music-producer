@@ -1,0 +1,111 @@
+# pyproject.toml
+[tool.pytest.ini_options]
+# Test Configuration
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--verbose",
+    "--tb=short",
+    "--cov=ai",
+    "--cov-report=term-missing",
+    "--cov-report=html:htmlcov",
+    "--cov-report=xml",
+    "--html=pytest_report.html",
+    "--self-contained-html",
+    "--json-report",
+    "--json-report-file=pytest_report.json"
+]
+
+# Async Testing
+asyncio_mode = "auto"
+
+# Markers
+markers = [
+    "unit: Unit tests for individual functions and methods",
+    "integration: Integration tests for multiple components",
+    "api: API endpoint tests",
+    "slow: Slow running tests",
+    "external: Tests that require external services",
+    "music: Music-related tests",
+    "video: Video analysis tests",
+    "provider: AI provider tests",
+    "audio: Audio analysis tests"
+]
+
+# Minimum Version
+minversion = "7.4.3"
+
+# Filter Warnings
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+    "ignore::UserWarning:pydantic.*",
+    "ignore::UserWarning:fastapi.*"
+]
+
+# Coverage Configuration
+[tool.coverage.run]
+source = ["ai"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__pycache__/*",
+    "*/.venv/*",
+    "*/venv/*",
+    "*/env/*"
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod"
+]
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+# Type Checking
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+# Exclude test files from type checking
+[[tool.mypy.overrides]]
+module = "tests.*"
+ignore_errors = true
+
+# Exclude third-party packages we don't control
+[[tool.mypy.overrides]]
+module = [
+    "loguru.*",
+    "librosa.*",
+    "soundfile.*",
+    "yt_dlp.*",
+    "moviepy.*",
+    "opencv.*",
+    "whisper.*"
+]
+ignore_missing_imports = true

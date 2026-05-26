@@ -1,0 +1,28 @@
+packages:
+  - 'packages/*'
+  - 'apps/*'
+  - 'services/*'
+
+# Specify which packages should be ignored
+ignoredDependencies:
+  - '**/node_modules/**'
+  - '**/dist/**'
+  - '**/build/**'
+
+# Shared configuration for all workspaces
+catalog:
+  react: '^18.2.0'
+  '@types/react': '^18.2.0'
+  '@types/react-dom': '^18.2.0'
+  typescript: '^5.4.0'
+  '@typescript-eslint/eslint-plugin': '^7.0.0'
+  '@typescript-eslint/parser': '^7.0.0'
+  eslint: '^8.57.0'
+  prettier: '^3.2.0'
+  husky: '^9.0.0'
+  lint-staged: '^15.2.0'
+
+# Override shared dependencies
+overrides:
+  react: '^18.2.0'
+  '@types/react': '^18.2.0'

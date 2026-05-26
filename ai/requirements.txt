@@ -1,0 +1,33 @@
+# Auto LoFi Hyper Pop Music Producer - AI Services Requirements
+# Lightweight version for VPS deployment (2GB RAM)
+
+# Core Framework
+fastapi>=0.104.1
+uvicorn>=0.24.0
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+
+# Database (SQLite for dev, PostgreSQL for prod)
+sqlalchemy>=2.0.23
+alembic>=1.13.0
+aiosqlite>=0.19.0
+
+# Audio Processing (lightweight)
+librosa>=0.10.1
+soundfile>=0.12.1
+pydub>=0.25.1
+numpy>=1.24.3
+
+# HTTP Client (for AI provider APIs)
+httpx>=0.25.0
+aiohttp>=3.9.1
+
+# Utilities
+python-dotenv>=1.0.0
+loguru>=0.7.2
+python-multipart>=0.0.6
+
+# Development & Testing
+pytest>=7.4.3
+pytest-asyncio>=0.21.1
+httpx>=0.25.0
