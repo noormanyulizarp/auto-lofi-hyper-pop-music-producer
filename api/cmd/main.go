@@ -71,7 +71,7 @@ func main() {
 	})
 
 	// Setup API routes
-	api.SetupRoutes(router, db, cfg, appLogger)
+	api.SetupRoutes(router, db.DB, cfg, appLogger)
 
 	// Create HTTP server
 	srv := &http.Server{

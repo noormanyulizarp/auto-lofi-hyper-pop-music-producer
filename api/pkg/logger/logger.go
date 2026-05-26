@@ -2,8 +2,8 @@ package logger
 
 import (
 	"os"
+
 	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 )
 
 type Logger struct {
@@ -11,54 +11,58 @@ type Logger struct {
 }
 
 func NewLogger() *Logger {
-	// Set up zerolog
-	log.Logger = zerolog.New(os.Stdout).With().Timestamp().Logger()
-	
-	// Set log level
+	log := zerolog.New(os.Stdout).With().Timestamp().Logger()
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
-	
-	return &Logger{
-		Logger: log.Logger,
-	}
+	return &Logger{Logger: log}
 }
 
-func (l *Logger) Info(msg string, fields map[string]interface{}) {
-	event := l.Info()
-	
-	for key, value := range fields {
-		event = event.Interface(key, value)
+func (l *Logger) Info(msg string, fields ...map[string]interface{}) {
+	event := l.Logger.Info()
+	if len(fields) > 0 {
+		for k, v := range fields[0] {
+			event = event.Interface(k, v)
+		}
 	}
-	
 	event.Msg(msg)
 }
 
-func (l *Logger) Error(msg string, fields map[string]interface{}) {
-	event := l.Error()
-	
-	for key, value := range fields {
-		event = event.Interface(key, value)
+func (l *Logger) Error(msg string, fields ...map[string]interface{}) {
+	event := l.Logger.Error()
+	if len(fields) > 0 {
+		for k, v := range fields[0] {
+			event = event.Interface(k, v)
+		}
 	}
-	
 	event.Msg(msg)
 }
 
-func (l *Logger) Fatal(msg string, fields map[string]interface{}) {
-	event := l.Fatal()
-	
-	for key, value := range fields {
-		event = event.Interface(key, value)
+func (l *Logger) Fatal(msg string, fields ...map[string]interface{}) {
+	event := l.Logger.Fatal()
+	if len(fields) > 0 {
+		for k, v := range fields[0] {
+			event = event.Interface(k, v)
+		}
 	}
-	
 	event.Msg(msg)
 	os.Exit(1)
 }
 
-func (l *Logger) Debug(msg string, fields map[string]interface{}) {
-	event := l.Debug()
-	
-	for key, value := range fields {
-		event = event.Interface(key, value)
+func (l *Logger) Debug(msg string, fields ...map[string]interface{}) {
+	event := l.Logger.Debug()
+	if len(fields) > 0 {
+		for k, v := range fields[0] {
+			event = event.Interface(k, v)
+		}
 	}
-	
+	event.Msg(msg)
+}
+
+func (l *Logger) Warn(msg string, fields ...map[string]interface{}) {
+	event := l.Logger.Warn()
+	if len(fields) > 0 {
+		for k, v := range fields[0] {
+			event = event.Interface(k, v)
+		}
+	}
 	event.Msg(msg)
 }

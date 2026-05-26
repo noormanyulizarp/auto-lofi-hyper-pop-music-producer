@@ -2,7 +2,6 @@ package api
 
 import (
 	"auto-lofi-hyper-pop-music-producer/api/internal/config"
-	"auto-lofi-hyper-pop-music-producer/api/internal/models"
 	"auto-lofi-hyper-pop-music-producer/api/pkg/logger"
 	
 	"github.com/gin-gonic/gin"

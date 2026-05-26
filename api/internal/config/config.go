@@ -25,8 +25,8 @@ func LoadConfig() (*Config, error) {
 	cfg := &Config{
 		Environment: getEnv("ENVIRONMENT", "development"),
 		Port:        getEnvAsInt("PORT", 8080),
-		DatabaseURL: getEnv("DATABASE_URL", "postgres://user:password@localhost:5432/musicdb?sslmode=disable"),
-		RedisURL:    getEnv("REDIS_URL", "redis://localhost:6379"),
+		DatabaseURL: getEnv("DATABASE_URL", "file:api.db?cache=shared&_journal_mode=WAL"),
+		RedisURL:    "", // Not used — SQLite only
 		JWTSecret:   getEnv("JWT_SECRET", "your-secret-key-here"),
 		AIService: AIServiceConfig{
 			BaseURL: getEnv("AI_SERVICE_URL", "http://localhost:8001"),
