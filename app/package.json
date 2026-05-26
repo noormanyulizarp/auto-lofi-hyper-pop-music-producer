@@ -1,6 +1,7 @@
 {
   "name": "auto-music-producer-frontend",
   "version": "1.0.0",
+  "type": "module",
   "description": "Auto LoFi & Hyper Pop Music Producer - React Frontend",
   "main": "index.js",
   "scripts": {
