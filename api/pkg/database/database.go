@@ -13,7 +13,7 @@ type Database struct {
 
 func NewDatabase(dataSourceName string) (*Database, error) {
 	if dataSourceName == "" {
-		dataSourceName = "file:api.db?cache=shared&_journal_mode=WAL"
+		dataSourceName = "file:api.db?cache=shared&_journal_mode=DELETE"
 	}
 
 	db, err := sql.Open("sqlite", dataSourceName)
@@ -26,9 +26,10 @@ func NewDatabase(dataSourceName string) (*Database, error) {
 	db.SetMaxIdleConns(1)
 	db.SetConnMaxLifetime(0)
 
-	// Enable WAL mode and foreign keys
-	if _, err := db.Exec("PRAGMA journal_mode=WAL"); err != nil {
-		return nil, fmt.Errorf("failed to set WAL mode: %w", err)
+	// Enable DELETE journal mode (lighter than WAL for low-memory VPS)
+	if _, err := db.Exec("PRAGMA journal_mode=DELETE"); err != nil {
+		// Non-fatal: continue without journal mode change
+		fmt.Printf("Warning: could not set journal mode: %v\n", err)
 	}
 	if _, err := db.Exec("PRAGMA foreign_keys=ON"); err != nil {
 		return nil, fmt.Errorf("failed to enable foreign keys: %w", err)
