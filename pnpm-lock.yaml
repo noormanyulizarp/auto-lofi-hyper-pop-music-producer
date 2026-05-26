@@ -1,0 +1,13 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+overrides:
+  react: ^18.2.0
+  '@types/react': ^18.2.0
+
+importers:
+
+  .: {}

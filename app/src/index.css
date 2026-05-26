@@ -2,64 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom styles */
-@layer base {
-  * {
-    @apply border-border;
-  }
-  
-  body {
-    @apply bg-background text-foreground;
-    font-family: 'Inter', system-ui, sans-serif;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-@layer components {
-  .gradient-bg {
-    @apply bg-gradient-to-br from-primary-50 via-white to-accent-50;
-  }
-  
-  .glass-effect {
-    @apply backdrop-blur-sm bg-white/80 border border-white/20;
-  }
-  
-  .audio-waveform {
-    @apply bg-secondary-100 rounded-lg overflow-hidden;
-  }
-  
-  .generation-card {
-    @apply glass-effect rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300;
-  }
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-secondary-100;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-secondary-300 rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-secondary-400;
-}
-
-/* Animations */
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 30px rgba(59, 130, 246, 0.8);
-  }
-}
-
-.glow-pulse {
-  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+* {
+  box-sizing: border-box;
 }

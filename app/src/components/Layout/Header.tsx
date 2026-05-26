@@ -1,4 +1,3 @@
-import React from 'react'
 import { Music, Menu } from 'lucide-react'
 
 interface HeaderProps {

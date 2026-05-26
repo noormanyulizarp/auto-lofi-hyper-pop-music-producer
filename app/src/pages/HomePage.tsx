@@ -1,4 +1,3 @@
-import React from 'react'
 import { Music, Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom'
 

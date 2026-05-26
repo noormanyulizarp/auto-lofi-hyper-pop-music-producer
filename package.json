@@ -1,62 +1,13 @@
 {
   "name": "auto-lofi-hyper-pop-music-producer",
   "version": "0.1.0",
-  "description": "AI-powered music generation platform with multi-provider support",
+  "description": "AI-powered music generation platform",
   "private": true,
-  "workspaces": [
-    "packages/*",
-    "apps/*",
-    "services/*"
-  ],
   "scripts": {
-    "dev": "pnpm --recursive run dev",
-    "build": "pnpm --recursive run build",
-    "test": "pnpm --recursive run test",
-    "lint": "pnpm --recursive run lint",
-    "format": "pnpm --recursive run format",
-    "clean": "pnpm --recursive run clean",
-    "type-check": "pnpm --recursive run type-check",
-    "install:all": "pnpm install",
-    "setup": "pnpm install && pnpm run build",
-    "dev:frontend": "cd packages/frontend && pnpm dev",
-    "dev:backend": "cd packages/backend && pnpm dev",
-    "dev:services": "pnpm --filter \"@producy/*\" run dev",
-    "build:frontend": "cd packages/frontend && pnpm build",
-    "build:backend": "cd packages/backend && pnpm build",
-    "build:services": "pnpm --filter \"@producy/*\" run build",
-    "test:all": "pnpm test",
-    "deploy:staging": "pnpm run build && pnpm run deploy:staging",
-    "deploy:production": "pnpm run build && pnpm run deploy:production"
-  },
-  "devDependencies": {
-    "typescript": "^5.4.0",
-    "prettier": "^3.2.0",
-    "eslint": "^8.57.0",
-    "husky": "^9.0.0",
-    "lint-staged": "^15.2.0",
-    "concurrently": "^8.2.0",
-    "nx": "^18.0.0"
-  },
-  "engines": {
-    "node": ">=18.0.0",
-    "pnpm": ">=8.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/noormanyulizarp/auto-lofi-hyper-pop-music-producer.git"
-  },
-  "keywords": [
-    "ai",
-    "music",
-    "generation",
-    "lofi",
-    "hyper-pop",
-    "typescript",
-    "python",
-    "golang",
-    "monorepo"
-  ],
-  "author": "Noor Manyulizar <noormanyulizarp@gmail.com>",
-  "license": "MIT",
-  "packageManager": "pnpm@8.15.0"
+    "dev:ai": "cd ai && source .venv/bin/activate && uvicorn app.main:app --reload --port 8001",
+    "dev:app": "cd app && pnpm dev",
+    "dev": "pnpm run dev:ai & pnpm run dev:app",
+    "build:app": "cd app && pnpm build",
+    "build": "pnpm run build:app"
+  }
 }

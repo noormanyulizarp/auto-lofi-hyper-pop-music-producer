@@ -1,4 +1,3 @@
-import React from 'react'
 import { Home, Music, BookOpen, BarChart3, Settings } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 
