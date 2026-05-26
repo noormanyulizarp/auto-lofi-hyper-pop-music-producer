@@ -21,13 +21,21 @@ class Settings(BaseSettings):
         "http://127.0.0.1:3001",
     ]
 
-    # AI Provider keys (configurable via dashboard / .env)
+    # ── AI Provider keys (configurable via dashboard / .env) ──
+
+    # OpenRouter (primary — 8 free models)
     OPENROUTER_API_KEY: Optional[str] = None
     OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
 
+    # HeartMuLa (local music generation engine)
     HEARTMULA_API_KEY: Optional[str] = None
     HEARTMULA_BASE_URL: str = "http://localhost:8000"
 
+    # GLM Z.ai Direct (Zhipu AI — bypass OpenRouter for lower latency)
+    GLM_ZAI_API_KEY: Optional[str] = None
+    GLM_ZAI_BASE_URL: str = "https://api.z.ai/api/coding/paas/v4"
+
+    # Legacy providers (optional)
     OPENAI_API_KEY: Optional[str] = None
     ANTHROPIC_API_KEY: Optional[str] = None
 

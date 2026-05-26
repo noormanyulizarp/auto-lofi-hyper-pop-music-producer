@@ -45,7 +45,7 @@ def init_database():
     _seed_lofi_presets()
 
 
-# ─── Provider seed data (all 8 OpenRouter models + HeartMuLa) ───────────
+# ─── Provider seed data (OpenRouter + HeartMuLa + GLM Z.ai Direct) ──────
 
 def _build_openrouter_models():
     """All 8 free models from config.json."""
@@ -58,6 +58,15 @@ def _build_openrouter_models():
         {"id": "arcee-ai/trinity-large-thinking:free", "name": "Trinity Thinking",  "specialty": "complex_reasoning"},
         {"id": "nvidia/nemotron-3-super-120b-a12b:free","name": "Nemotron 120B",     "specialty": "deep_analysis"},
         {"id": "z-ai/glm-4.5-air:free",               "name": "GLM 4.5 Air",       "specialty": "music_friendly"},
+    ]
+
+
+def _build_glm_zai_models():
+    """GLM models direct from Z.ai (Zhipu) — lower latency than OpenRouter."""
+    return [
+        {"id": "glm-4.5-air", "name": "GLM 4.5 Air", "specialty": "fast_llm"},
+        {"id": "glm-4.5",     "name": "GLM 4.5",     "specialty": "balanced_llm"},
+        {"id": "glm-4.7",     "name": "GLM 4.7",     "specialty": "complex_reasoning"},
     ]
 
 
@@ -142,12 +151,43 @@ def _seed_default_providers():
                     "max_duration": 300,
                 },
             ),
+
+            # ── GLM Z.ai Direct (Zhipu AI — bypass OpenRouter for lower latency) ──
+            AIProvider(
+                name="glm-zai",
+                display_name="GLM Z.ai (Direct)",
+                provider_type="llm",
+                status="active",
+                api_key=os.environ.get("GLM_ZAI_API_KEY", ""),
+                api_base_url="https://api.z.ai/api/coding/paas/v4",
+                auth_header_format="Bearer {api_key}",
+                models=_build_glm_zai_models(),
+                default_model="glm-4.5-air",
+                max_tokens=65536,
+                temperature=0.7,
+                timeout_seconds=300,
+                supports_music_generation=False,
+                supports_lyrics_enhancement=True,
+                supports_audio_analysis=True,
+                description="GLM models direct from Zhipu AI — lower latency, no OpenRouter overhead. Models: glm-4.5-air (fast), glm-4.5 (balanced), glm-4.7 (complex)",
+                docs_url="https://open.bigmodel.cn/dev/api",
+                config_metadata={
+                    "endpoint": "/chat/completions",
+                    "supports_streaming": True,
+                    "fallback_to_openrouter": True,
+                    "task_routing": {
+                        "fast_llm": "glm-4.5-air",
+                        "balanced": "glm-4.5",
+                        "complex_reasoning": "glm-4.7",
+                    },
+                },
+            ),
         ]
 
         for provider in providers:
             db.add(provider)
         db.commit()
-        logger.info(f"Seeded {len(providers)} AI providers (OpenRouter 8 models + HeartMuLa)")
+        logger.info(f"Seeded {len(providers)} AI providers (OpenRouter + HeartMuLa + GLM Z.ai Direct)")
 
     except Exception as e:
         db.rollback()

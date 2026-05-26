@@ -4,17 +4,21 @@ import os
 
 
 class ProviderConfig(BaseSettings):
-    """AI Provider configuration — 8 OpenRouter free models + HeartMuLa."""
+    """AI Provider configuration — OpenRouter (8 free) + HeartMuLa + GLM Z.ai Direct."""
 
     # OpenRouter — loaded from .env
     OPENROUTER_API_KEY: str = os.environ.get("OPENROUTER_API_KEY", "")
     OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
 
+    # GLM Z.ai Direct — loaded from .env
+    GLM_ZAI_API_KEY: str = os.environ.get("GLM_ZAI_API_KEY", "")
+    GLM_ZAI_BASE_URL: str = "https://api.z.ai/api/coding/paas/v4"
+
     # Defaults
     DEFAULT_PROVIDER: str = "openrouter"
     DEFAULT_MODEL: str = "baidu/cobuddy:free"
 
-    # 8-model rotation (all free via OpenRouter)
+    # 8-model rotation via OpenRouter (all free)
     MODELS: Dict[str, Dict[str, Any]] = {
         "openrouter-cobuddy": {
             "model": "baidu/cobuddy:free",
@@ -87,6 +91,35 @@ class ProviderConfig(BaseSettings):
             "specialty": "music_friendly",
             "max_tokens": 32768,
             "temperature": 0.7,
+        },
+
+        # ── GLM Z.ai Direct (bypass OpenRouter for lower latency) ──
+        "zai-glm-4.5-air": {
+            "model": "glm-4.5-air",
+            "provider": "glm-zai",
+            "api_base": "https://api.z.ai/api/coding/paas/v4",
+            "fallbacks": ["zai-glm-4.5"],
+            "specialty": "fast_llm",
+            "max_tokens": 32768,
+            "temperature": 0.7,
+        },
+        "zai-glm-4.5": {
+            "model": "glm-4.5",
+            "provider": "glm-zai",
+            "api_base": "https://api.z.ai/api/coding/paas/v4",
+            "fallbacks": ["zai-glm-4.7"],
+            "specialty": "balanced_llm",
+            "max_tokens": 65536,
+            "temperature": 0.7,
+        },
+        "zai-glm-4.7": {
+            "model": "glm-4.7",
+            "provider": "glm-zai",
+            "api_base": "https://api.z.ai/api/coding/paas/v4",
+            "fallbacks": ["openrouter-glm-air"],
+            "specialty": "complex_reasoning",
+            "max_tokens": 65536,
+            "temperature": 0.5,
         },
     }
 
