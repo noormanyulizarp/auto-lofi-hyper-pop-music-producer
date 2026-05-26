@@ -55,3 +55,5 @@ htmlcov/
 # Node
 .turbo/
 .nx/
+ai/.venv/
+ai/services/data/
