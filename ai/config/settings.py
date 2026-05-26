@@ -39,6 +39,10 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: Optional[str] = None
     ANTHROPIC_API_KEY: Optional[str] = None
 
+    # GLM via Anthropic-compatible endpoint (z.ai)
+    ANTHROPIC_BASE_URL: Optional[str] = None
+    ANTHROPIC_AUTH_TOKEN: Optional[str] = None
+
     # File storage
     UPLOAD_DIR: str = "uploads"
     MAX_FILE_SIZE: int = 100 * 1024 * 1024  # 100MB
@@ -59,6 +63,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         case_sensitive = True
+        extra = "ignore"  # Allow extra keys in .env without errors
 
 
 settings = Settings()
