@@ -136,6 +136,15 @@ Fade out gently
         self, task_id: str, title: str, tags: str, lyrics: str, duration: int
     ) -> Dict[str, Any]:
         """Generate music using local heartlib CLI."""
+        if not self.heartlib_path:
+            return {
+                "task_id": task_id,
+                "title": title,
+                "status": "failed",
+                "error": "heartlib_path not configured",
+                "message": "Local generation unavailable: heartlib not installed",
+            }
+
         task = {
             "task_id": task_id,
             "title": title,

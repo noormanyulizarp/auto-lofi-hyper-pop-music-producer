@@ -1,7 +1,6 @@
-"""Music generation routes — HeartMuLa-powered AI music generation."""
+"""Music generation routes — AI-powered music generation endpoints."""
 
 from fastapi import APIRouter, HTTPException
-from fastapi.responses import FileResponse
 from loguru import logger
 from pydantic import BaseModel
 from typing import Optional, List
@@ -9,7 +8,7 @@ from enum import Enum
 import sys
 from pathlib import Path
 
-# Add ai/ to path for service imports
+# Ensure ai/ is on path for service imports
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from services.heartmula import heartmula_service
@@ -50,10 +49,11 @@ class GenerateMusicRequest(BaseModel):
 
 @router.post("/generate")
 async def generate_music(request: GenerateMusicRequest):
-    """Generate music using HeartMuLa AI."""
+    """Generate music using AI (HeartMuLa integration)."""
     try:
         logger.info(f"Music generation request: {request.title} ({request.genre}/{request.mood})")
 
+        # Validate
         if request.duration < 10 or request.duration > 600:
             raise HTTPException(status_code=400, detail="Duration must be between 10 and 600 seconds")
 
@@ -68,7 +68,7 @@ async def generate_music(request: GenerateMusicRequest):
             instruments=request.instruments,
         )
 
-        logger.info(f"Music generation result: {result.get('task_id')} — {result.get('status')}")
+        logger.info(f"Music generation result: {result['task_id']} — {result['status']}")
         return result
 
     except HTTPException:
@@ -82,6 +82,7 @@ async def generate_music(request: GenerateMusicRequest):
 async def get_generation_status(task_id: str):
     """Get music generation status."""
     logger.info(f"Status request: {task_id}")
+
     result = await heartmula_service.get_status(task_id)
 
     if result.get("status") == "not_found":
@@ -95,21 +96,29 @@ async def download_music(task_id: str):
     """Download generated music file."""
     logger.info(f"Download request: {task_id}")
 
-    audio_bytes = await heartmula_service.get_audio(task_id)
-    if audio_bytes:
-        audio_path = Path("uploads/music") / f"{task_id}.mp3"
-        return FileResponse(
-            path=str(audio_path),
-            media_type="audio/mpeg",
-            filename=f"{task_id}.mp3",
-        )
+    status = await heartmula_service.get_status(task_id)
+    if status.get("status") == "not_found":
+        raise HTTPException(status_code=404, detail=f"Audio for task {task_id} not found")
 
-    raise HTTPException(status_code=404, detail=f"Audio for task {task_id} not found")
+    audio_bytes = await heartmula_service.get_audio(task_id)
+    if audio_bytes is None:
+        return {
+            "task_id": task_id,
+            "status": status.get("status"),
+            "message": "Audio file not yet available. Install heartlib for actual audio generation.",
+        }
+
+    from fastapi.responses import Response
+    return Response(
+        content=audio_bytes,
+        media_type="audio/mpeg",
+        headers={"Content-Disposition": f"attachment; filename={task_id}.mp3"}
+    )
 
 
 @router.get("/genres")
 async def list_genres():
-    """List available music genres and moods."""
+    """List available music genres."""
     return {
         "genres": [g.value for g in Genre],
         "moods": [m.value for m in Mood],
@@ -119,4 +128,4 @@ async def list_genres():
 @router.get("/history")
 async def get_generation_history(limit: int = 20, offset: int = 0):
     """Get music generation history."""
-    return await heartmula_service.list_tasks(limit, offset)
+    return await heartmula_service.list_tasks(limit=limit, offset=offset)

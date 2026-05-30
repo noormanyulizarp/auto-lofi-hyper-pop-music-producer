@@ -52,7 +52,7 @@ async def upload_video(file: UploadFile = File(...)):
     }
 
 
-@router.get("/status/{task_id}")
+@router.get("/video/status/{task_id}")
 async def get_analysis_status(task_id: str):
     """Get status of a video analysis task."""
     # TODO: Implement task status tracking

@@ -57,7 +57,7 @@ class TestVideoUpload:
 
 class TestVideoStatus:
     def test_get_status(self):
-        r = client.get("/api/v1/status/vid-task-123")
+        r = client.get("/api/v1/video/status/vid-task-123")
         assert r.status_code == 200
         data = r.json()
         assert data["task_id"] == "vid-task-123"
